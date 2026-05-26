@@ -171,6 +171,40 @@ function buscarContactos(evento) {
   renderizarContactos(resultados);
 }
 
+// ---- FUNCIÓN: EXPORTAR A CSV ----
+// Genera un archivo CSV con todos los contactos y lo descarga.
+function exportarCSV() {
+  if (contactos.length === 0) {
+    alert('No hay contactos para exportar.');
+    return;
+  }
+
+  // Cabecera del CSV
+  var filas = ['Nombre,Teléfono,Email,Categoría'];
+
+  // Una fila por contacto, en orden alfabético
+  var listaOrdenada = ordenarContactos(contactos);
+  for (var i = 0; i < listaOrdenada.length; i++) {
+    var c = listaOrdenada[i];
+    filas.push(
+      '"' + c.nombre    + '",' +
+      '"' + c.telefono  + '",' +
+      '"' + c.email     + '",' +
+      '"' + c.categoria + '"'
+    );
+  }
+
+  // Crear el archivo y lanzar la descarga
+  var csv    = filas.join('\n');
+  var blob   = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  var url    = URL.createObjectURL(blob);
+  var enlace = document.createElement('a');
+  enlace.href     = url;
+  enlace.download = 'contactos.csv';
+  enlace.click();
+  URL.revokeObjectURL(url);
+}
+
 // ---- EVENTOS ----
 formulario.addEventListener('submit', anadirContacto);
 buscador.addEventListener('input', buscarContactos);

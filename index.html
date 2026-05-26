@@ -50,7 +50,10 @@
       <section class="list-section">
         <div class="list-header">
           <h2 class="section-title">Contactos <span id="contador" class="contador">0</span></h2>
-          <input class="form__input search-input" type="text" id="buscador" placeholder="Buscar por nombre..." />
+          <div class="list-header__acciones">
+            <input class="form__input search-input" type="text" id="buscador" placeholder="Buscar por nombre..." />
+            <button class="btn btn--secundario" onclick="exportarCSV()">Exportar CSV</button>
+          </div>
         </div>
         <div id="lista-contactos" class="contact-list">
           <p class="empty-state">No hay contactos aún. ¡Añade el primero!</p>
