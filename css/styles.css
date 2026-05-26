@@ -120,14 +120,6 @@ body {
 }
 
 /* ============================================
-   TEXTAREA DE NOTAS
-   ============================================ */
-.form__textarea {
-  resize: vertical;
-  min-height: 62px;
-}
-
-/* ============================================
    BOTONES
    ============================================ */
 .btn {
@@ -277,16 +269,6 @@ body {
   font-size: 0.8rem;
   color: var(--color-texto-suave);
   margin-top: 2px;
-}
-
-.contact-notas {
-  font-size: 0.78rem;
-  color: var(--color-texto-suave);
-  font-style: italic;
-  margin-top: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .contact-badge {

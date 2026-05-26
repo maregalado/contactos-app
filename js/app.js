@@ -16,7 +16,6 @@ var formulario      = document.getElementById('form-contacto');
 var inputNombre     = document.getElementById('nombre');
 var inputTelefono   = document.getElementById('telefono');
 var inputEmail      = document.getElementById('email');
-var inputNotas      = document.getElementById('notas');
 var selectCategoria = document.getElementById('categoria');
 var mensajeError    = document.getElementById('error-msg');
 var buscador        = document.getElementById('buscador');
@@ -56,9 +55,6 @@ function renderizarContactos(lista) {
     html +=   '<div class="contact-info">';
     html +=     '<div class="contact-nombre">' + c.nombre + '</div>';
     html +=     '<div class="contact-detalle">' + detalles + '</div>';
-    if (c.notas) {
-      html +=   '<div class="contact-notas">' + c.notas + '</div>';
-    }
     html +=   '</div>';
     html +=   '<span class="contact-badge badge-' + c.categoria + '">' + c.categoria + '</span>';
     html +=   '<button class="btn btn--eliminar" onclick="eliminarContacto(' + c.id + ')">Eliminar</button>';
@@ -110,7 +106,6 @@ function anadirContacto(evento) {
   var nombre    = inputNombre.value.trim();
   var telefono  = inputTelefono.value.trim();
   var email     = inputEmail.value.trim();
-  var notas     = inputNotas.value.trim();
   var categoria = selectCategoria.value;
 
   // Validar
@@ -129,7 +124,6 @@ function anadirContacto(evento) {
     nombre:    nombre,
     telefono:  telefono,
     email:     email,
-    notas:     notas,
     categoria: categoria
   };
 
