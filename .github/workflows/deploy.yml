@@ -1,0 +1,59 @@
+name: Verificar y desplegar en GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+# Permisos necesarios para desplegar en GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita despliegues simultáneos; si llega un push nuevo, espera al anterior
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  verificar-y-desplegar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+
+    steps:
+      # 1. Descargar el código del repositorio
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      # 2. Comprobar que los archivos principales existen
+      - name: Verificar archivos principales
+        run: |
+          echo "Verificando archivos principales..."
+          archivos=("index.html" "css/styles.css" "js/datos.js" "js/app.js")
+          for archivo in "${archivos[@]}"; do
+            if [ -f "$archivo" ]; then
+              echo "✓ $archivo"
+            else
+              echo "✗ $archivo — NO encontrado"
+              exit 1
+            fi
+          done
+          echo "Todos los archivos están presentes. Continuando con el despliegue."
+
+      # 3. Preparar GitHub Pages
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      # 4. Empaquetar toda la carpeta raíz como artefacto desplegable
+      - name: Subir artefacto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      # 5. Publicar en GitHub Pages
+      - name: Desplegar en GitHub Pages
+        id: despliegue
+        uses: actions/deploy-pages@v4
