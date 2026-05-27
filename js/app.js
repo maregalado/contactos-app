@@ -15,8 +15,9 @@ var contactos = cargarContactos(); // viene de datos.js
 var formulario      = document.getElementById('form-contacto');
 var inputNombre     = document.getElementById('nombre');
 var inputTelefono   = document.getElementById('telefono');
-var inputEmail      = document.getElementById('email');
-var inputNotas      = document.getElementById('notas');
+var inputEmail        = document.getElementById('email');
+var inputCumpleanos   = document.getElementById('cumpleanos');
+var inputNotas        = document.getElementById('notas');
 var selectCategoria = document.getElementById('categoria');
 var mensajeError    = document.getElementById('error-msg');
 var buscador        = document.getElementById('buscador');
@@ -56,6 +57,9 @@ function renderizarContactos(lista) {
     html +=   '<div class="contact-info">';
     html +=     '<div class="contact-nombre">' + c.nombre + '</div>';
     html +=     '<div class="contact-detalle">' + detalles + '</div>';
+    if (c.cumpleanos) {
+      html +=   '<div class="contact-notas">🎂 ' + formatearFecha(c.cumpleanos) + '</div>';
+    }
     if (c.notas) {
       html +=   '<div class="contact-notas">' + c.notas + '</div>';
     }
@@ -89,6 +93,14 @@ function obtenerColorCategoria(categoria) {
   return colores[categoria] || '#6b7280';
 }
 
+// ---- FUNCIÓN: FORMATEAR FECHA ----
+// Convierte "1990-03-15" en "15 de marzo de 1990"
+function formatearFecha(fecha) {
+  var partes = fecha.split('-');
+  var date = new Date(partes[0], partes[1] - 1, partes[2]);
+  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
 // ---- FUNCIÓN: VALIDAR FORMULARIO ----
 // Devuelve un mensaje de error o cadena vacía si todo está bien
 function validarFormulario(nombre, telefono) {
@@ -107,11 +119,12 @@ function validarFormulario(nombre, telefono) {
 function anadirContacto(evento) {
   evento.preventDefault();
 
-  var nombre    = inputNombre.value.trim();
-  var telefono  = inputTelefono.value.trim();
-  var email     = inputEmail.value.trim();
-  var notas     = inputNotas.value.trim();
-  var categoria = selectCategoria.value;
+  var nombre      = inputNombre.value.trim();
+  var telefono    = inputTelefono.value.trim();
+  var email       = inputEmail.value.trim();
+  var cumpleanos  = inputCumpleanos.value;
+  var notas       = inputNotas.value.trim();
+  var categoria   = selectCategoria.value;
 
   // Validar
   var error = validarFormulario(nombre, telefono);
@@ -125,12 +138,13 @@ function anadirContacto(evento) {
 
   // Crear el nuevo contacto
   var nuevoContacto = {
-    id:        generarId(contactos), // viene de datos.js
-    nombre:    nombre,
-    telefono:  telefono,
-    email:     email,
-    notas:     notas,
-    categoria: categoria
+    id:          generarId(contactos), // viene de datos.js
+    nombre:      nombre,
+    telefono:    telefono,
+    email:       email,
+    cumpleanos:  cumpleanos,
+    notas:       notas,
+    categoria:   categoria
   };
 
   contactos.push(nuevoContacto);
